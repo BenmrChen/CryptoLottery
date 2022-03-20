@@ -1,9 +1,12 @@
-# Lottery 🎉
+# Crypto Lottery 🎲
+Using blockchain to provide highly transparent digital services & competitive lottery platform solutions
 
-## Features
+## 🔮 Features
+* To be added
 
 
-## Quick Start
+
+## 🪄 Quick Start
 
 Prerequisites: [Node (v16)](https://nodejs.org/en/download/) plus [npm](https://www.npmjs.com/) and [Git](https://git-scm.com/downloads)
 
@@ -15,8 +18,6 @@ git clone https://github.com/Krypto-Camp/batch2-final-project-team-4
 
 > setup:
 
-To run this project, install it locally using npm:
-
 ```bash
 npm install
 copy .env.example file and rename it to .env
@@ -26,6 +27,13 @@ npm run chain # run localhost chain by hardhat, keep this process, don't close i
 npm run deploy:localhost # compile and deploy contracts to localhost chain
 npm run dev
 ```
+> env:
+```bash
+INFURA_PROJECT_ID = 'add_the_infura_project_id_here'
+ACCOUNT_PRIVATE_KEY = 'add_ur_own_metamask_develop_account_private_key_here'
+VITE_INFURA_ID = 'add_the_infura_project_id_here'
+```
+
 
 > deploy/test:
 
@@ -34,7 +42,7 @@ npm run clean
 npm run deploy:rinkeby
 npm run dev
 ```
-## Reference
+## 🔖 Reference
 [Hardhat](https://hardhat.org/getting-started/)
 \
 [React Ethers Hook - Wagmi](https://wagmi-xyz.vercel.app/)
@@ -43,13 +51,13 @@ npm run dev
 \
 [RentRent](https://rentrent.xyz/)
 
-## 其他補充
-#### 合約串接部分，可優先看 
+## Others
+#### Connect Frontend to Contracts
 `src/components/GetContract.tsx`
 \
 `src/main.tsx`
 
-#### 合約撰寫
+#### Create Contract
 ```
 1. 於 contract/ 新增合約
 2. 於 scripts/deploy.js 新增部屬方法 `deployContract()`
@@ -58,7 +66,7 @@ npm run dev
 5. 仿造 getContract.tsx 串接
 ```
 
-### Folder Strcuture
+#### Folder Strcuture
 ```bash
 - address/ # generate contract address file by deploy.js，客製寫法，避免前端要在部屬合約後一直更新合約地址
 - artifacts/ # compiled contract here, use npm run clean to delete it.
@@ -81,7 +89,7 @@ npm run dev
   - main.tsx # 這裡引入 provider
 ```
 
-**scripts**
+#### scripts
 ```bash
 npm run chain # run localhost chain by hardhat, keep this process, don't close it
 npm run compile # compiled contract in contracts/
@@ -91,12 +99,5 @@ npm run console:rinkeby # run hardhat console on rinkeby (if need testnet, pls a
 npm run deploy:hardhat # deploy contracts on localhost chain
 npm run deploy:rinkeby # deploy contracts on rinkeby
 npm run deploy # deploy contracts on mainnet
-```
-
-**.env**
-```bash
-INFURA_PROJECT_ID='add_the_infura_project_id_here'
-ACCOUNT_PRIVATE_KEY='add_ur_own_metamask_develop_account_private_key_here'
-VITE_INFURA_ID='add_the_infura_project_id_here'
 ```
 

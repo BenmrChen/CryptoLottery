@@ -101,3 +101,12 @@ npm run deploy:rinkeby # deploy contracts on rinkeby
 npm run deploy # deploy contracts on mainnet
 ```
 
+## 🤝 Collaboration Guide
+
+* Create new branches for new features: naming convention `<member name>-<branch feature>`, e.g., `XXX-contract`
+* Before `PR` to main branch: `pull from main` -> `local testing` -> `pull request`
+
+
+
+
+

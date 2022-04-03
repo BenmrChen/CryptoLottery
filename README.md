@@ -1,15 +1,24 @@
 # Crypto Lottery 🎲
 
 ![image](https://user-images.githubusercontent.com/88078588/161435760-8fd7f7bb-2a29-4736-a06a-4f38770d5306.png)
-![image](https://user-images.githubusercontent.com/88078588/161435749-760a97c4-c5fc-4903-90b6-75e19df69729.png)
-![image](https://user-images.githubusercontent.com/88078588/161435845-14675e15-dda3-4027-9ac0-1a2bdc90c6e9.png)
+![image](https://user-images.githubusercontent.com/88078588/161435951-cd44d272-21c6-46b0-9a4a-899794bad557.png)
 
 Using blockchain to provide highly transparent digital services & competitive lottery platform solutions
 
-## 🔮 Features
+## 🔮 Prerequisites
 * To be added
 
+## Installation
 
+## Usage
+
+## Testing
+
+## Resources
+
+## License
+
+====
 
 ## 🪄 Quick Start
 

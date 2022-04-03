@@ -1,8 +1,5 @@
 # Crypto Lottery 🎲
-
-![image](https://user-images.githubusercontent.com/88078588/161436791-b005b325-bf52-40c4-a778-61533fe91560.png)![image](https://user-images.githubusercontent.com/88078588/161436740-f1682a8b-ae4b-40e3-aa3b-7cd0fc45691a.png)
-![image](https://user-images.githubusercontent.com/88078588/161436755-63f555dd-7d8b-42af-ba81-7eb1acbc5ac4.png)
-
+![image](https://user-images.githubusercontent.com/88078588/161436894-7b21ab27-ee5a-405e-b848-93a93b49051f.png)
 
 Using blockchain to provide highly transparent digital services & competitive lottery platform solutions
 

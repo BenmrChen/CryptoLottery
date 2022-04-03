@@ -12,9 +12,16 @@ Using blockchain to provide highly transparent digital services & competitive lo
 
 ## Testing
 
-## Resources
+## 🔖 Resources
+[Hardhat](https://hardhat.org/getting-started/)
+\
+[React Ethers Hook - Wagmi](https://wagmi-xyz.vercel.app/)
+\
+[Vite](https://cn.vitejs.dev/guide/#scaffolding-your-first-vite-project)
+\
+[RentRent](https://rentrent.xyz/)
 
-## License
+
 
 ====
 

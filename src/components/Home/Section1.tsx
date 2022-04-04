@@ -39,10 +39,7 @@ export const Section1 = () => {
         className="section1-subtitle2"
         style={{ display: "flex", justifyContent: "center" }}
       >
-        <div style={{ width: "50%" }}>
-          Let all players participating in ETH Lottery maximize the benefits and
-          take into account the needs of asset liquidity at the same time.
-        </div>
+        Let all players maximize benefits and keep your assets liquid
       </div>
 
       {/* <img src={nft1} alt="" className="nft-img1" />

@@ -1,35 +1,36 @@
 import { useAccount } from "wagmi";
 import tokenomic from "../../assets/imgs/tokenomic.png";
+import team from "../../assets/imgs/team.jpg";
 
 const members = [
   {
-    name: "TZ 👱🏼‍♂️｜#C0011101",
-    job: "Team Leader<br />Project Manager<br />Lead Developer",
+    name: "Benmr",
+    job: "CEO<br/>Team Leader<br />Smart Contract Developer",
     // avatar: tz,
   },
   {
-    name: "Grace 👱🏻‍♀️｜#C0011x01",
-    job: "Lead Smart Contract Developer",
+    name: "Astrid",
+    job: "CMO",
     // avatar: grace,
   },
   {
-    name: "Jill 👩🏻‍🦰｜#C0011102",
-    job: "Smart Contract Developer",
+    name: "Ocean",
+    job: "CSO<br/>White Paper<br/>Tokenomic",
     // avatar: jill,
   },
   {
-    name: "Linda 🙋🏻‍♀️｜#C0011103",
-    job: "Front-End Developer",
+    name: "Grace",
+    job: "Project Setup<br/>Homepage Developer",
     // avatar: linda,
   },
   {
-    name: "Vincent 🤦🏻‍♂️｜#C0011104",
-    job: "Smart Contract Developer<br />Whitepaper Writer",
+    name: "Zoe ",
+    job: "Tokenomic",
     // avatar: vincent,
   },
   {
-    name: "Tim 💆‍♂️｜#C0011105",
-    job: "Smart Contract Developer",
+    name: "",
+    job: "",
     // avatar: tim,
   },
 ];
@@ -37,6 +38,9 @@ export const Section3 = () => {
   const [{ data: accountData }] = useAccount();
   return (
     <div className="section3 flex-ac flex-jb wrap">
+      <div style={{ position: "absolute", zIndex: -1, opacity: "0.2" }}>
+        <img src={team} width="100%" alt="" className="team" />
+      </div>
       <div className="content">
         <div className="section-title">
           <div className="label">TEAM</div>

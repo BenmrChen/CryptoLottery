@@ -22,9 +22,10 @@ export const Section1 = () => {
         className="section1-title2"
         style={{ fontWeight: 400, letterSpacing: "2px" }}
       >
-        <span>ETH Lottery</span> - Best Lottery Platform build on Ethereum
+        <span>ETH Lottery</span> - Best lottery platform backed by Ethereum
         {/* <div className="rocket">🚀</div> */}
       </div>
+
       <div
         className="section1-subtitle2"
         style={{
@@ -33,7 +34,8 @@ export const Section1 = () => {
           marginBottom: "24px",
         }}
       >
-        A reliable and sustainable lotto system built on Ethereum network
+        <br /> A decentralized, reliable and sustainable lottery platform backed
+        by Ethereum
       </div>
       <div
         className="section1-subtitle2"
@@ -62,7 +64,7 @@ export const Section1 = () => {
         </div>
       ) : (
         <div className="section1-btns2 flex-ac flex-ja">
-          <div className="connect-hint">Please connect waller</div>
+          <div className="connect-hint">Please connect wallet</div>
         </div>
       )}
     </div>

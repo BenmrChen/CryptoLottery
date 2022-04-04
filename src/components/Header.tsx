@@ -2,7 +2,7 @@ import * as React from "react";
 import { useAccount } from "wagmi";
 import { Link } from "react-router-dom";
 import { Connect } from "../components";
-import logo from "../../public/icon.png";
+import logo from "/icon.png";
 
 // TODO:
 export const Header = () => {

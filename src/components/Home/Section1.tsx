@@ -1,29 +1,56 @@
 import { useAccount } from "wagmi";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import nft1 from "../../assets/imgs/nft1.jpeg";
 import nft2 from "../../assets/imgs/nft2.jpeg";
 import nft3 from "../../assets/imgs/nft3.jpeg";
+import kv from "../../assets/imgs/kv.jpg";
 
 export const Section1 = () => {
   const [{ data: accountData }] = useAccount();
   const navigate = useNavigate();
   return (
     <div className="section1 flex-c wrap">
-      <div className="section1-title">
-        <span>Rent Rent</span> - The Best NFT Renting Platform
-        <div className="rocket">🚀</div>
+      <img
+        src={kv}
+        width="100%"
+        alt=""
+        style={{ position: "absolute", zIndex: -1 }}
+      />
+
+      <div
+        className="section1-title2"
+        style={{ fontWeight: 400, letterSpacing: "2px" }}
+      >
+        <span>ETH Lottery</span> - Best Lottery Platform build on Ethereum
+        {/* <div className="rocket">🚀</div> */}
       </div>
-      <div className="section1-subtitle">
-        安全、便捷，去中心化，為 NFT 資產創造更多價值的自由租賃平台。
-        <br />
-        KryptoCamp Team1 Demo
+      <div
+        className="section1-subtitle2"
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          marginBottom: "24px",
+        }}
+      >
+        A reliable and sustainable lotto system built on Ethereum network
       </div>
-      <img src={nft1} alt="" className="nft-img1" />
+      <div
+        className="section1-subtitle2"
+        style={{ display: "flex", justifyContent: "center" }}
+      >
+        <div style={{ width: "50%" }}>
+          Let all players participating in ETH Lottery maximize the benefits and
+          take into account the needs of asset liquidity at the same time.
+        </div>
+      </div>
+
+      {/* <img src={nft1} alt="" className="nft-img1" />
       <img src={nft2} alt="" className="nft-img2" />
-      <img src={nft3} alt="" className="nft-img3" />
+      <img src={nft3} alt="" className="nft-img3" /> */}
       {accountData?.address ? (
-        <div className="section1-btns flex-ac flex-ja">
-          <div
+        <div className="section1-btns2 flex-ac flex-ja">
+          {/* <div
             className="btn-primary"
             onClick={() => navigate(`/profile?type=myitems`)}
           >
@@ -34,13 +61,17 @@ export const Section1 = () => {
             onClick={() => navigate(`/profile?type=all`)}
           >
             Borrow NFT
-          </div>
+          </div> */}
         </div>
       ) : (
-        <div className="section1-btns flex-ac flex-ja">
-          <div className="connect-hint">請先連結錢包</div>
+        <div className="section1-btns2 flex-ac flex-ja">
+          <div className="connect-hint">Please connect waller</div>
         </div>
       )}
     </div>
   );
 };
+
+const Test = styled.div`
+  background-image: url("../../assets/imgs/kv.jpg");
+`;

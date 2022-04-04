@@ -43,8 +43,7 @@ export const Section3 = () => {
       </div>
       <div className="content">
         <div className="section-title">
-          <div className="label">TEAM</div>
-          <span>團隊成員</span>
+          <span>Team</span>
         </div>
         <div className="flex-as flex-jb wrap">
           {members.map((member) => (

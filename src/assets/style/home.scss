@@ -206,6 +206,7 @@
   }
 
   .content-desc {
+    letter-spacing: 2px;
     font-size: size(24);
     color: #eee;
     line-height: 1.5;
@@ -223,6 +224,7 @@
   background-color: #252229;
   margin-bottom: size(25);
   border-radius: 15px;
+  opacity: 0.8;
 
   &:hover {
     .card-avatar img {
@@ -267,15 +269,16 @@
 
   .item-bar {
     width: 100%;
-    height: size(45);
-    background: linear-gradient(90deg, rgba(254, 23, 67, 0), #fe1743);
+    height: size(8);
+    background: linear-gradient(90deg, rgba(254, 23, 67, 0), #8cc2d0);
     margin-bottom: size(20);
   }
 
   .item-date {
     font-size: size(48);
     color: #fff;
-    font-weight: bold;
+    font-weight: 400;
+    letter-spacing: 2px;
     margin-bottom: size(20);
     padding-left: size(20);
   }
@@ -285,6 +288,7 @@
     color: #eee;
     line-height: 1.5;
     padding-left: size(20);
+    letter-spacing: 2px;
   }
 }
 

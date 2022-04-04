@@ -1,5 +1,5 @@
-import * as React from 'react'
-import { useConnect } from 'wagmi'
+import * as React from "react";
+import { useConnect } from "wagmi";
 
 export const Connect = () => {
   const [
@@ -9,20 +9,28 @@ export const Connect = () => {
       loading,
     },
     connect,
-  ] = useConnect()
+  ] = useConnect();
 
   return (
     <div>
       <div className="btns">
-        {connectors.map((x) => (
-          <div className="connect-btn" disabled={!x.ready} key={x.name} onClick={() => connect(x)}>
-            {x.name}
-            {!x.ready && ' (unsupported)'}
-            {loading && x.name === connector?.name && '…'}
-          </div>
+        {connectors.map((x, index) => (
+          <>
+            <div
+              className="connect-btn"
+              disabled={!x.ready}
+              key={x.name}
+              onClick={() => connect(x)}
+            >
+              {x.name}
+              {!x.ready && " (unsupported)"}
+              {loading && x.name === connector?.name && "…"}
+            </div>
+            {index !== connectors?.length - 1 && <span>|</span>}
+          </>
         ))}
       </div>
-      <div>{error && (error?.message ?? 'Failed to connect')}</div>
+      <div>{error && (error?.message ?? "Failed to connect")}</div>
     </div>
-  )
-}
+  );
+};

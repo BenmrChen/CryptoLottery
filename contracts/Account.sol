@@ -18,9 +18,10 @@ contract Account {
     }
 
     // tood: 是否參與本期樂透、是否質押
-    function getAccountBalance() public view {
+    function getAccountBalance() public view returns (uint, uint){
         uint256 tokenBalance = token.balanceOf(msg.sender);
         uint256 NFTBalance = NFT.balanceOf(msg.sender);
 
+        return (tokenBalance, NFTBalance);
     }
 }

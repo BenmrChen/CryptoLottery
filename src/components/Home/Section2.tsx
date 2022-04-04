@@ -1,5 +1,5 @@
-import { useAccount } from 'wagmi'
-import tokenomic from '../../assets/imgs/tokenomic.png'
+import { useAccount } from "wagmi";
+import tokenomic from "../../assets/imgs/tokenomic.png";
 
 export const Section2 = () => {
   const [{ data: accountData }] = useAccount();
@@ -7,50 +7,51 @@ export const Section2 = () => {
     <div className="section2 flex-c wrap">
       <div className="content">
         <div className="section-title flex-ac">
-          <div className="label">
-            TOKENOMICS
-          </div>
-          <span>貨幣經濟</span>
-          <a href="https://crystal-atlasaurus-78f.notion.site/Rent-Rent-b5460a595b804921b48189dedba940e7" className="white-paper-link" target="_blank">白皮書連結</a>
+          {/* <div className="label">TOKENOMICS</div> */}
+          <span>TOKENOMICS</span>
+          <a
+            href="https://changjuihuan.gitbook.io/eth-lottery/"
+            className="white-paper-link"
+            target="_blank"
+          >
+            White Paper Link
+          </a>
         </div>
-        <img src={tokenomic} alt="" className="tokenomic" />
+        {/* <img src={tokenomic} alt="" className="tokenomic" /> */}
 
         <div className="flex-as flex-jb wrap">
-          <div style={{ width: '50%' }}>
-            <div className="content-title">
-              收益來源：
-            </div>
-            <div className="content-desc">
-              1. NFT 質押手續費<br />
-              2. 交易手續費（租賃過程）
-            </div>
-          </div>
-          <div style={{ width: '50%' }}>
-            <div className="content-title">
-              運用方式：
-            </div>
-            <div className="content-desc">
-              50% 收益進入國庫、50% 收益進入項目基金會
-            </div>
-            <div className="content-desc">
-              <strong>國庫</strong>：70% 資金儲備、30% 為鎖倉的緊急資金<br />
-              <strong>項目基金會</strong>：40% 資金儲備、30% 提供項目方運用、30% 為鎖倉的緊急資金
+          <div style={{ width: "50%" }}>
+            <div className="content-title">Seed money</div>
+            <div className="content-desc" style={{ paddingRight: "30px" }}>
+              1. Source of Funds: NFTs selling profit
+              <br />
+              2. 95% for Lending protocol or Stablecoin Protocol, 5% for
+              platform operation
+              <br />
+              3. 0.3 ETH / NFT (10000 NFTs)
             </div>
           </div>
-          <div style={{ width: '100%',marginTop: '2rem' }}>
-            <div className="content-title">
-              資金運用：
-            </div>
+          <div style={{ width: "50%" }}>
+            <div className="content-title">Lottery</div>
             <div className="content-desc">
-            <strong>資金儲備</strong>：以 $ETH 作為支持平台代幣 $RENT 發行的資金儲備 ，確保平台代幣 $RENT 的價值，<br />
-            <strong>緊急資金</strong>：當平台出現重大危機時，項目方經過多數而決議動用的資金。<br />
-            <strong>項目方運用</strong>：由項目方自由運用的資金，其用途將會載明於財務報告中，透過適當管道公開發佈。
+              1. Once a week
+              <br />
+              2. Selling info: 200 token (160 token for NFT holder)
             </div>
           </div>
-
+          <div style={{ width: "100%", marginTop: "2rem" }}>
+            <div className="content-title">Rewards</div>
+            <div className="content-desc">
+              <strong>Source: </strong>profits from Lending/Stablecoin Protocol
+              <br />
+              <strong>Rewards Distribution: </strong>
+              95% for lottery winner, 2% for participants with NFT, 2% for for
+              cash pooling, 1% for platform operation
+              <br />
+            </div>
+          </div>
         </div>
       </div>
-
     </div>
-  )
-}
+  );
+};

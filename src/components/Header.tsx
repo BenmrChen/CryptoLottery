@@ -1,8 +1,9 @@
 import * as React from "react";
 import { useAccount } from "wagmi";
 import { Link } from "react-router-dom";
-import { Connect } from "../components";
-import logo from "/icon.png";
+import { Connect } from '../components'
+import logo from '../assets/imgs/logo_w.png'
+import { AccountInfo } from './Profile/AccountInfo'
 
 // TODO:
 export const Header = () => {
@@ -27,22 +28,17 @@ export const Header = () => {
         </div>
       </Link>
       <div className="right">
-        {!accountData?.address ? (
-          <Connect />
-        ) : (
-          <div className="flex-ac">
-            <Link className="user-page-link" to="/profile?type=myitems">
-              <i
-                className="fas fa-user icon-font"
-                style={{ fontSize: "14px", marginRight: "4px" }}
-              ></i>
-              Hi，{accountData?.address}
-            </Link>
-            <div className="connect-btn" onClick={() => disconnect()}>
-              Logout
-            </div>
-          </div>
-        )}
+        {
+          !accountData?.address ?
+            <Connect /> : <div className="flex-ac">
+              <Link className="user-page-link" to="/myprofile">
+                <AccountInfo />
+              </Link>
+              <div className="connect-btn" onClick={() => disconnect()}>
+                登出
+              </div>
+              </div>
+        }
       </div>
     </div>
   );

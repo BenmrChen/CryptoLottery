@@ -2,6 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { providers } from "ethers";
 import { Header, Profile, Footer } from "./components";
+import { MyProfile } from "./components/Profile/MyProfile";
 
 // Imports
 import { Connector, Provider, chain, defaultChains } from "wagmi";
@@ -85,6 +86,7 @@ ReactDOM.render(
           <Routes>
             <Route path="/" element={<App />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/myprofile" element={<MyProfile />} />
           </Routes>
           {/* <Footer /> */}
         </div>

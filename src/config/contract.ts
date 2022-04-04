@@ -9,6 +9,16 @@ import nftAbi from "../../external/nft.json";
 import MarketContract from "../../artifacts/contracts/example/Market.sol/Market.json";
 import market_contract_address from "../../address/Market.json";
 
+import accountToken from "../../artifacts/contracts/example/AtomicToken.sol/AtomicToken.json";; // TODO: right .json file
+import account_token_address from "../../address/AtomicToken.json";
+
+
+export const account_contract = {
+  address: account_token_address.address,
+  abi: accountToken.abi,
+};
+
+// 代幣 token
 export const atomic_token = {
   address: atomic_token_address.address,
   abi: AtomicToken.abi,

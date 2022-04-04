@@ -1,6 +1,5 @@
 import { useAccount } from "wagmi";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
 import nft1 from "../../assets/imgs/nft1.jpeg";
 import nft2 from "../../assets/imgs/nft2.jpeg";
 import nft3 from "../../assets/imgs/nft3.jpeg";
@@ -70,7 +69,3 @@ export const Section1 = () => {
     </div>
   );
 };
-
-const Test = styled.div`
-  background-image: url("../../assets/imgs/kv.jpg");
-`;

@@ -1,5 +1,6 @@
-# Crypto Lottery 🎲
-![image](https://user-images.githubusercontent.com/88078588/161436894-7b21ab27-ee5a-405e-b848-93a93b49051f.png)
+# ETH Lottery 🎲
+<img width="1440" alt="image" src="https://user-images.githubusercontent.com/56819930/161485396-6392fda3-d876-4be7-89cb-30e80d498cbf.png">
+
 
 Using blockchain to provide highly transparent digital services & competitive lottery platform solutions
 
@@ -125,7 +126,8 @@ npm run deploy # deploy contracts on mainnet
 * Create new branches for new features: naming convention `<member name>-<branch feature>`, e.g., `XXX-contract`
 * Before `PR` to main branch: `pull from main` -> `local testing` -> `pull request`
 
-
+## 📝 Sketch
+![image](https://user-images.githubusercontent.com/88078588/161436894-7b21ab27-ee5a-405e-b848-93a93b49051f.png)
 
 
 

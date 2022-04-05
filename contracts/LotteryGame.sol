@@ -4,7 +4,7 @@ pragma solidity ^0.8.11;
 import "./CLToken.sol";
 import "./LotteryNFT.sol";
 
-contract Lottery {
+contract LotteryGame {
     address public owner;
     address payable[] public players;
     uint public lotteryId;

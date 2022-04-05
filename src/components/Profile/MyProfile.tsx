@@ -13,6 +13,7 @@ import Button from '@mui/material/Button';
 import Image from 'react-image-webp';
 import waiting from '../../assets/imgs/waiting.webp'
 import waitingDefault from '../../assets/imgs/wait-default.png'
+import StorefrontIcon from '@mui/icons-material/Storefront';
 
 
 export const MyProfile = () => {
@@ -30,6 +31,7 @@ export const MyProfile = () => {
     const [loading, setLoading] = useState(false);
     const [coins, setCoins] = useState(0);
     const [isJoin, setIsJoin] = useState(false);
+    const [isOwnNFT, setIsOwnNFT] = useState(false);
     const [isStakeNFT, setIsStakeNFT] = useState(false);
 
     const [{ data: accountContractData }, fetchMyAccount] = useContractRead(
@@ -163,16 +165,8 @@ export const MyProfile = () => {
 
   const NFTInfo = () => {
     return (
-      loading ? (<div className="confirm-loading flex-c">
-      <div>
-        <Image
-          src={waitingDefault}
-          webp={waiting}
-        />
-        wait loading data...
-      </div>
-    </div>) :
-      <Grid item xs={12} sm={6} md={4} color="#fff" >
+      isOwnNFT ? 
+      (<Grid item xs={12} sm={6} md={4} color="#fff" >
           <Card
               sx={{ width: '30%', display: 'flex', flexDirection: 'column' }}
           >
@@ -198,13 +192,30 @@ export const MyProfile = () => {
                   }}>領取獎勵</Button>
               </CardActions>
           </Card>
-      </Grid>
+      </Grid>) :
+      <Button 
+      sx={{px: 3,
+        ml: 3,
+        py: '11px'}} 
+        className="user-page-link" size="large" variant="outlined" startIcon={<StorefrontIcon />} onClick={() => {
+          setLoading(true)
+          // TODO: call Buy NFT
+          // after fetching...
+          setLoading(false);
+      }}>購買 NFT</Button>
     )
   }
-
-  
   
   return (
+    loading ? (<div className="confirm-loading flex-c">
+      <div>
+        <Image
+          src={waitingDefault}
+          webp={waiting}
+        />
+        wait loading data...
+      </div>
+    </div>) :
     <div className="left">
         <Box sx={{
             alignItems: 'left',

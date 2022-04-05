@@ -7,12 +7,13 @@ import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { Stack, Box, Typography } from '@mui/material'
-import { Grid, Card, CardMedia, CardContent, CardActions } from '@mui/material'
+import { Grid, Card, CardMedia, CardActions } from '@mui/material'
 import { account_contract } from "../../config/contract";
 import Button from '@mui/material/Button';
-import SendIcon from '@mui/icons-material/Send';
-import AddIcon from '@mui/icons-material/Add';
-import LoadingButton from '@mui/lab/LoadingButton';
+import Image from 'react-image-webp';
+import waiting from '../../assets/imgs/waiting.webp'
+import waitingDefault from '../../assets/imgs/wait-default.png'
+import StorefrontIcon from '@mui/icons-material/Storefront';
 
 
 export const MyProfile = () => {
@@ -27,12 +28,11 @@ export const MyProfile = () => {
     const [curretSelect, setCurretSelect] = useState<NFTObject>();
     const [modalIsOpen, setIsOpen] = useState(false);
     const [modalIsWait, setIsWait] = useState(false);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [coins, setCoins] = useState(0);
     const [isJoin, setIsJoin] = useState(false);
-    const [fetchingJoin, setFetchingJoin] = useState(false);
+    const [isOwnNFT, setIsOwnNFT] = useState(false);
     const [isStakeNFT, setIsStakeNFT] = useState(false);
-    const [stakingNFT, setStakingNFT] = useState(false);
 
     const [{ data: accountContractData }, fetchMyAccount] = useContractRead(
         {
@@ -54,19 +54,23 @@ export const MyProfile = () => {
 
   useEffect(() => {
       if (!accountData?.address) {
+          setLoading(false);
           // TODO: error handel
           return
       }
 
+      console.log("address ====  " + accountData?.address)
       if (accountContractData === undefined) {
           console.log('fetchMyAccount')
           setLoading(true);
           fetchMyAccount();
+          // after fetching...
+          setLoading(false);
       } else {
+          setLoading(false);
           setCoins(accountContractData.coins);
           setIsJoin(accountContractData.isJoin);
       }
-      
 
   }, [accountData?.address, accountContractData]);
 
@@ -92,13 +96,15 @@ export const MyProfile = () => {
                 </Typography>
             </Box>
             <Box sx={{ml: 1}}>
-            <Button
+            <Button className='white-paper-link'
             size="small"
             onClick={() => {
-              // TODO: 跳轉至購買代幣？
+              setLoading(true)
+              // TODO: call api Token.buyToken
+              // after fetching...
+              setLoading(false);
             }}
-            variant="contained"
-            color='warning'
+            variant="outlined"
             >購買代幣</Button>
             </Box>
         </Box>
@@ -143,21 +149,28 @@ export const MyProfile = () => {
             >尚未參與抽獎活動</Typography>
             </Box>
             <Box sx={{ml: 1}}>
-            <Button
+            <Button className='white-paper-link'
             size="small"
             onClick={() => {
-              setFetchingJoin(true)
-              // TODO: call 參加抽獎
+              setLoading(true)
+              if (isOwnNFT) {
+                // TODO: call api Lottery.buyLotteryWithNFT
+              } else {
+                // TODO: call api Lottery.buyLottery
+              }
+              // after fetching...
+              setLoading(false);
             }}
-            variant="contained"
-            color='warning'
+            variant="outlined"
+            disabled={coins < 200 || (isStakeNFT && coins < 160)}
             >參加抽獎</Button></Box></Box>)
     )
   }
 
   const NFTInfo = () => {
     return (
-      <Grid item xs={12} sm={6} md={4} color="#fff" >
+      isOwnNFT ? 
+      (<Grid item xs={12} sm={6} md={4} color="#fff" >
           <Card
               sx={{ width: '30%', display: 'flex', flexDirection: 'column' }}
           >
@@ -169,19 +182,44 @@ export const MyProfile = () => {
                   image="https://source.unsplash.com/random"
               />
               <CardActions>
-                  <Button size="small" variant="outlined" disabled={isStakeNFT} onClick={() => {
-                    // TODO: call 質押 NFT
+                  <Button size="small" color='primary' variant="outlined" disabled={isStakeNFT} onClick={() => {
+                    setLoading(true)
+                    // TODO: call api NFT.stakeNFT
+                    // after fetching...
+                    setLoading(false);
                   }}>質押 NFT</Button>
-                  <Button size="small" variant="outlined" disabled={!isStakeNFT} onClick={() => {
-                    // TODO: call 領取代幣獎勵
+                  <Button size="small" color='primary' variant="outlined" disabled={!isStakeNFT} onClick={() => {
+                    setLoading(true)
+                    // TODO: call api Token.rewardDailyToken
+                    // after fetching...
+                    setLoading(false);
                   }}>領取獎勵</Button>
               </CardActions>
           </Card>
-      </Grid>
+      </Grid>) :
+      <Button 
+      sx={{px: 3,
+        ml: 3,
+        py: '11px'}} 
+        className="user-page-link" size="large" variant="outlined" startIcon={<StorefrontIcon />} onClick={() => {
+          setLoading(true)
+          // TODO: call api NFT.buyNFT
+          // after fetching...
+          setLoading(false);
+      }}>購買 NFT</Button>
     )
   }
   
   return (
+    loading ? (<div className="confirm-loading flex-c">
+      <div>
+        <Image
+          src={waitingDefault}
+          webp={waiting}
+        />
+        wait loading data...
+      </div>
+    </div>) :
     <div className="left">
         <Box sx={{
             alignItems: 'left',

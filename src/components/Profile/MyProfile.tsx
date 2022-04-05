@@ -100,7 +100,7 @@ export const MyProfile = () => {
             size="small"
             onClick={() => {
               setLoading(true)
-              // TODO: 跳轉至購買代幣？
+              // TODO: call api Token.buyToken
               // after fetching...
               setLoading(false);
             }}
@@ -153,7 +153,11 @@ export const MyProfile = () => {
             size="small"
             onClick={() => {
               setLoading(true)
-              // TODO: call 參加抽獎
+              if (isOwnNFT) {
+                // TODO: call api Lottery.buyLotteryWithNFT
+              } else {
+                // TODO: call api Lottery.buyLottery
+              }
               // after fetching...
               setLoading(false);
             }}
@@ -180,13 +184,13 @@ export const MyProfile = () => {
               <CardActions>
                   <Button size="small" color='primary' variant="outlined" disabled={isStakeNFT} onClick={() => {
                     setLoading(true)
-                    // TODO: call 質押 NFT
+                    // TODO: call api NFT.stakeNFT
                     // after fetching...
                     setLoading(false);
                   }}>質押 NFT</Button>
                   <Button size="small" color='primary' variant="outlined" disabled={!isStakeNFT} onClick={() => {
                     setLoading(true)
-                    // TODO: call 領取代幣獎勵
+                    // TODO: call api Token.rewardDailyToken
                     // after fetching...
                     setLoading(false);
                   }}>領取獎勵</Button>
@@ -199,7 +203,7 @@ export const MyProfile = () => {
         py: '11px'}} 
         className="user-page-link" size="large" variant="outlined" startIcon={<StorefrontIcon />} onClick={() => {
           setLoading(true)
-          // TODO: call Buy NFT
+          // TODO: call api NFT.buyNFT
           // after fetching...
           setLoading(false);
       }}>購買 NFT</Button>

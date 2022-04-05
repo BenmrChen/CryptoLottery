@@ -7,7 +7,12 @@ import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { Stack, Box, Typography } from '@mui/material'
+import { Grid, Card, CardMedia, CardContent, CardActions } from '@mui/material'
 import { account_contract } from "../../config/contract";
+import Button from '@mui/material/Button';
+import SendIcon from '@mui/icons-material/Send';
+import AddIcon from '@mui/icons-material/Add';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 
 export const MyProfile = () => {
@@ -24,7 +29,10 @@ export const MyProfile = () => {
     const [modalIsWait, setIsWait] = useState(false);
     const [loading, setLoading] = useState(true);
     const [coins, setCoins] = useState(0);
-    const [isJoin, setIsJoin] = useState(true);
+    const [isJoin, setIsJoin] = useState(false);
+    const [fetchingJoin, setFetchingJoin] = useState(false);
+    const [isStakeNFT, setIsStakeNFT] = useState(false);
+    const [stakingNFT, setStakingNFT] = useState(false);
 
     const [{ data: accountContractData }, fetchMyAccount] = useContractRead(
         {
@@ -83,14 +91,25 @@ export const MyProfile = () => {
                 目前持有代幣數為: {coins}
                 </Typography>
             </Box>
+            <Box sx={{ml: 1}}>
+            <Button
+            size="small"
+            onClick={() => {
+              // TODO: 跳轉至購買代幣？
+            }}
+            variant="contained"
+            color='warning'
+            >購買代幣</Button>
+            </Box>
         </Box>
     )
   }
 
   const JoinStatusInfo = () => {
     return (
-      <Box
-      sx={{
+        isJoin ? (
+        <Box 
+        sx={{
             alignItems: 'center',
             cursor: 'pointer',
             display: 'flex',
@@ -99,16 +118,66 @@ export const MyProfile = () => {
             py: '11px',
             }}
             >
-            {isJoin ? (<CheckCircleIcon fontSize='medium'/>) : (<CancelIcon fontSize='medium'/>)}
+            <CheckCircleIcon fontSize='large'/>
             <Box sx={{ml: 1}}>
                 <Typography
                 color="neutral.400"
                 variant="body2"
-                >
-                {isJoin ? "已參與此次抽獎活動" : "尚未參與此次抽獎活動"}
-                </Typography>
+                >已參與此次抽獎活動</Typography>
+            </Box></Box>) : 
+        (<Box
+        sx={{
+            alignItems: 'center',
+            cursor: 'pointer',
+            display: 'flex',
+            justifyContent: 'space-between',
+            px: 3,
+            py: '11px',
+            }}
+            >
+            <CancelIcon fontSize='large'/>
+            <Box sx={{ml: 1}}>
+            <Typography
+            color="neutral.400"
+            variant="body2"
+            >尚未參與抽獎活動</Typography>
             </Box>
-        </Box>
+            <Box sx={{ml: 1}}>
+            <Button
+            size="small"
+            onClick={() => {
+              setFetchingJoin(true)
+              // TODO: call 參加抽獎
+            }}
+            variant="contained"
+            color='warning'
+            >參加抽獎</Button></Box></Box>)
+    )
+  }
+
+  const NFTInfo = () => {
+    return (
+      <Grid item xs={12} sm={6} md={4} color="#fff" >
+          <Card
+              sx={{ width: '30%', display: 'flex', flexDirection: 'column' }}
+          >
+              <CardMedia
+                  component="img"
+                  sx={{
+                      pt: '0',
+                  }}
+                  image="https://source.unsplash.com/random"
+              />
+              <CardActions>
+                  <Button size="small" variant="outlined" disabled={isStakeNFT} onClick={() => {
+                    // TODO: call 質押 NFT
+                  }}>質押 NFT</Button>
+                  <Button size="small" variant="outlined" disabled={!isStakeNFT} onClick={() => {
+                    // TODO: call 領取代幣獎勵
+                  }}>領取獎勵</Button>
+              </CardActions>
+          </Card>
+      </Grid>
     )
   }
   
@@ -130,7 +199,8 @@ export const MyProfile = () => {
             >
                 <Box className="user-page-link"><AccountInfo /></Box>
                 <Box className="user-page-link"><CoinInfo /></Box>
-                {/* <Box className="user-page-link"><JoinStatusInfo /></Box> */}
+                <Box className="user-page-link"><JoinStatusInfo /></Box>
+                <Box className="user-page-link"><NFTInfo /></Box>
             </Stack>
         </Box>
     </div>

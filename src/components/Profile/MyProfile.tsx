@@ -14,7 +14,32 @@ import Image from 'react-image-webp';
 import waiting from '../../assets/imgs/waiting.webp'
 import waitingDefault from '../../assets/imgs/wait-default.png'
 import StorefrontIcon from '@mui/icons-material/Storefront';
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#7cc0d8",
+      contrastText: "#24586c"
+    },
+    action: {
+      focus: "#525879",
+      active: "#525879",
+      disabledBackground: "#7e878e80",
+      disabled: "#52878e40"
+    },
+    text: {
+      primary: "#eee"
+    }
+  }
+});
+
+// Update the Button's color prop options
+declare module "@mui/material/Button" {
+  interface ButtonPropsColorOverrides {
+    primary: true;
+  }
+}
 
 export const MyProfile = () => {
     const navigate = useNavigate();
@@ -31,7 +56,7 @@ export const MyProfile = () => {
     const [loading, setLoading] = useState(false);
     const [coins, setCoins] = useState(0);
     const [isJoin, setIsJoin] = useState(false);
-    const [isOwnNFT, setIsOwnNFT] = useState(false);
+    const [isOwnNFT, setIsOwnNFT] = useState(true);
     const [isStakeNFT, setIsStakeNFT] = useState(false);
 
     const [{ data: accountContractData }, fetchMyAccount] = useContractRead(
@@ -76,46 +101,50 @@ export const MyProfile = () => {
 
   const CoinInfo = () => {
     return (
-      <Box
-      sx={{
-            alignItems: 'center',
-            cursor: 'pointer',
-            display: 'flex',
-            justifyContent: 'space-between',
-            px: 3,
-            py: '11px',
-            }}
-            >
-            <MonetizationOnIcon fontSize='large'/>
-            <Box sx={{ml: 1}}>
-                <Typography
-                color="neutral.400"
-                variant="body2"
-                >
-                目前持有代幣數為: {coins}
-                </Typography>
-            </Box>
-            <Box sx={{ml: 1}}>
-            <Button className='white-paper-link'
-            size="small"
-            onClick={() => {
-              setLoading(true)
-              // TODO: call api Token.buyToken
-              // after fetching...
-              setLoading(false);
-            }}
-            variant="outlined"
-            >購買代幣</Button>
-            </Box>
+      <ThemeProvider theme={theme}>
+        <Box
+        sx={{
+          alignItems: 'center',
+          cursor: 'pointer',
+          display: 'flex',
+          justifyContent: 'space-between',
+          px: 3,
+          py: '11px',
+          }}
+          >
+          <MonetizationOnIcon fontSize='large'/>
+          <Box sx={{ml: 1}}>
+              <Typography
+              color="text.primary"
+              variant="body1"
+              >
+              目前持有代幣數為: {coins}
+              </Typography>
+          </Box>
+          <Box sx={{ml: 1}}>
+          <Button color='primary'
+          size="small"
+          onClick={() => {
+            setLoading(true)
+            // TODO: call api Token.buyToken
+            // after fetching...
+            setLoading(false);
+          }}
+          variant="outlined"
+          >購買代幣</Button>
+          </Box>
         </Box>
+        </ThemeProvider>
     )
   }
 
   const JoinStatusInfo = () => {
     return (
-        isJoin ? (
-        <Box 
-        sx={{
+
+      
+        isJoin ? (<ThemeProvider theme={theme}>
+          <Box 
+          sx={{
             alignItems: 'center',
             cursor: 'pointer',
             display: 'flex',
@@ -127,50 +156,54 @@ export const MyProfile = () => {
             <CheckCircleIcon fontSize='large'/>
             <Box sx={{ml: 1}}>
                 <Typography
-                color="neutral.400"
-                variant="body2"
+                color="text.primary"
+                variant="body1"
                 >已參與此次抽獎活動</Typography>
-            </Box></Box>) : 
-        (<Box
-        sx={{
-            alignItems: 'center',
-            cursor: 'pointer',
-            display: 'flex',
-            justifyContent: 'space-between',
-            px: 3,
-            py: '11px',
-            }}
-            >
-            <CancelIcon fontSize='large'/>
-            <Box sx={{ml: 1}}>
-            <Typography
-            color="neutral.400"
-            variant="body2"
-            >尚未參與抽獎活動</Typography>
-            </Box>
-            <Box sx={{ml: 1}}>
-            <Button className='white-paper-link'
-            size="small"
-            onClick={() => {
-              setLoading(true)
-              if (isOwnNFT) {
-                // TODO: call api Lottery.buyLotteryWithNFT
-              } else {
-                // TODO: call api Lottery.buyLottery
-              }
-              // after fetching...
-              setLoading(false);
-            }}
-            variant="outlined"
-            disabled={coins < 200 || (isStakeNFT && coins < 160)}
-            >參加抽獎</Button></Box></Box>)
+            </Box></Box>
+        </ThemeProvider>) : 
+        (<ThemeProvider theme={theme}>
+          <Box
+          sx={{
+              alignItems: 'center',
+              cursor: 'pointer',
+              display: 'flex',
+              justifyContent: 'space-between',
+              px: 3,
+              py: '11px',
+              }}
+              >
+              <CancelIcon fontSize='large' />
+              <Box sx={{ml: 1}}>
+              <Typography
+              color="text.primary"
+              variant="body1"
+              >尚未參與抽獎活動</Typography>
+              </Box>
+              <Box sx={{ml: 1}}>
+              <Button color='primary'
+              size="small"
+              onClick={() => {
+                setLoading(true)
+                if (isOwnNFT) {
+                  // TODO: call api Lottery.buyLotteryWithNFT
+                } else {
+                  // TODO: call api Lottery.buyLottery
+                }
+                // after fetching...
+                setLoading(false);
+              }}
+              variant="outlined"
+              disabled={coins < 200 || (isStakeNFT && coins < 160)}
+              >參加抽獎</Button></Box>
+          </Box>
+        </ThemeProvider>)
     )
   }
 
   const NFTInfo = () => {
     return (
       isOwnNFT ? 
-      (<Grid item xs={12} sm={6} md={4} color="#fff" >
+      (<Grid sx={{ml: 3}} item xs={12} sm={6} md={4} color="#000000" >
           <Card
               sx={{ width: '30%', display: 'flex', flexDirection: 'column' }}
           >
@@ -181,7 +214,8 @@ export const MyProfile = () => {
                   }}
                   image="https://source.unsplash.com/random"
               />
-              <CardActions>
+              <ThemeProvider theme={theme}>
+              <CardActions >
                   <Button size="small" color='primary' variant="outlined" disabled={isStakeNFT} onClick={() => {
                     setLoading(true)
                     // TODO: call api NFT.stakeNFT
@@ -195,18 +229,20 @@ export const MyProfile = () => {
                     setLoading(false);
                   }}>領取獎勵</Button>
               </CardActions>
+              </ThemeProvider>
           </Card>
       </Grid>) :
+      <ThemeProvider theme={theme}>
       <Button 
       sx={{px: 3,
         ml: 3,
         py: '11px'}} 
-        className="user-page-link" size="large" variant="outlined" startIcon={<StorefrontIcon />} onClick={() => {
+        color='primary' size="large" variant="outlined" startIcon={<StorefrontIcon />} onClick={() => {
           setLoading(true)
           // TODO: call api NFT.buyNFT
           // after fetching...
           setLoading(false);
-      }}>購買 NFT</Button>
+      }}>購買 NFT</Button></ThemeProvider>
     )
   }
   
@@ -220,6 +256,7 @@ export const MyProfile = () => {
         wait loading data...
       </div>
     </div>) :
+    <ThemeProvider theme={theme}>
     <div className="left">
         <Box sx={{
             alignItems: 'left',
@@ -235,13 +272,14 @@ export const MyProfile = () => {
             alignItems="stretch"
             spacing={0}
             >
-                <Box className="user-page-link"><AccountInfo /></Box>
+                <Box className="user-page-link" color='text.primary'><AccountInfo /></Box>
                 <Box className="user-page-link"><CoinInfo /></Box>
                 <Box className="user-page-link"><JoinStatusInfo /></Box>
                 <Box className="user-page-link"><NFTInfo /></Box>
             </Stack>
         </Box>
     </div>
+    </ThemeProvider>
 );
 };
 

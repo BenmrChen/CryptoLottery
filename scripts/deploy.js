@@ -30,8 +30,21 @@ async function main() {
   const deployer = deployers[0].address
   // We get the contract to deploy
   const initSupply = 5000 * 10 ** 4;
+  const CLToken = await deployContract('CLToken', [initSupply])
+  console.log(CLToken)
+  console.log(CLToken.address)
+  const Vendor = await deployContract('Vendor', [CLToken.address])
+  const LotteryNFT = await deployContract('LotteryNFT')
+  const LotteryGame = await deployContract('LotteryGame')
+
+  await CLToken.approve(Vendor.address, 1000000)
+  await Vendor.addToken(CLToken.address, 1000000)
+
+  // await deployer.deploy(MyToken, process.env.INITIAL_TOKENS);
+  // await deployer.deploy(MyKycContract);
+  // await deployer.deploy(MyTokenSale, 1, addr[0], MyToken.address, MyKycContract.address);
   // const AtomicTokenContract = await deployContract('AtomicToken', [initSupply])
-  const RentRentToken = await deployContract('RentRentToken', [initSupply])
+  // const RentRentToken = await deployContract('RentRentToken', [initSupply])
   // const KryContract = await deployContract('KycContract', [])
   // await deployContract('DuctionAuctionCrowdSale', [100, deployer, AtomicTokenContract.address, KryContract.address])
   // await deployContract('Market', [])

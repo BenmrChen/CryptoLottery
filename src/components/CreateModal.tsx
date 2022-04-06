@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Modal from "react-modal";
 import { useProvider, useContractWrite, useContract, useSigner } from "wagmi";
-import { market_contract, ERC721_contract, rentrent_token } from "../config/contract";
+// import { market_contract, ERC721_contract, rentrent_token } from "../config/contract";
 import { ethers } from 'ethers'
 import Swal from 'sweetalert2'
 
@@ -39,60 +39,60 @@ export const CreateModal = (props: any) => {
   const [price, setPrice] = useState("");
   const [deposit, setDeposit] = useState("");
 
-  const [{}, createMarketItem] = useContractWrite(
-    {
-      addressOrName: market_contract.address,
-      contractInterface: market_contract.abi,
-      signerOrProvider: provider,
-    },
-    "createMarketItem"
-  );
+  // const [{}, createMarketItem] = useContractWrite(
+  //   {
+  //     addressOrName: market_contract.address,
+  //     contractInterface: market_contract.abi,
+  //     signerOrProvider: provider,
+  //   },
+  //   "createMarketItem"
+  // );
 
-  const nftContract = useContract({
-    addressOrName: curretSelect?.asset_contract?.address,
-    contractInterface: ERC721_contract.abi,
-    signerOrProvider: signer,
-  });
+  // const nftContract = useContract({
+  //   addressOrName: curretSelect?.asset_contract?.address,
+  //   contractInterface: ERC721_contract.abi,
+  //   signerOrProvider: signer,
+  // });
 
-  const create = async () => {
-    props.setIsWait(true)
-    let approveTransaction = await nftContract.approve(
-      market_contract.address,
-      Number(curretSelect?.token_id)
-    );
-    await approveTransaction.wait();
+  // const create = async () => {
+  //   props.setIsWait(true)
+  //   let approveTransaction = await nftContract.approve(
+  //     market_contract.address,
+  //     Number(curretSelect?.token_id)
+  //   );
+  //   await approveTransaction.wait();
 
-    let ethprice = ethers.utils.parseEther(price)
-    let ethdeposit = ethers.utils.parseEther(deposit)
-    console.log(ethprice, ethdeposit, 'ethttertee')
-    // return 
+  //   let ethprice = ethers.utils.parseEther(price)
+  //   let ethdeposit = ethers.utils.parseEther(deposit)
+  //   console.log(ethprice, ethdeposit, 'ethttertee')
+  //   // return 
 
-    const result = await createMarketItem({
-      args: [
-        curretSelect?.asset_contract?.address, //nftContract
-        curretSelect?.token_id, //tokenId
-        ethprice, //租金
-        ethdeposit, //押金
-        validTime, //秒, validTime
-      ],
-      overrides: {
-        gasLimit: 2030000,
-        gasPrice: 60000000000,
-      },
-    });
+  //   const result = await createMarketItem({
+  //     args: [
+  //       curretSelect?.asset_contract?.address, //nftContract
+  //       curretSelect?.token_id, //tokenId
+  //       ethprice, //租金
+  //       ethdeposit, //押金
+  //       validTime, //秒, validTime
+  //     ],
+  //     overrides: {
+  //       gasLimit: 2030000,
+  //       gasPrice: 60000000000,
+  //     },
+  //   });
 
-    console.log("createresult", result);
-    console.log(
-      `input price:${price},deposit:${deposit},validTime:${validTime}`
-    );
-    props.setIsWait(false);
-    props.setIsOpen(false);
-    Swal.fire(
-      '恭喜!',
-      '獲得 100 RentRent Token 獎勵',
-      'success'
-    )
-  };
+  //   console.log("createresult", result);
+  //   console.log(
+  //     `input price:${price},deposit:${deposit},validTime:${validTime}`
+  //   );
+  //   props.setIsWait(false);
+  //   props.setIsOpen(false);
+  //   Swal.fire(
+  //     '恭喜!',
+  //     '獲得 100 RentRent Token 獎勵',
+  //     'success'
+  //   )
+  // };
 
   return (
     <Modal
@@ -163,9 +163,9 @@ export const CreateModal = (props: any) => {
           >
             Cancel
           </button>
-          <button onClick={create} className="comfirm-btn btn">
+          {/* <button onClick={create} className="comfirm-btn btn">
             Comfirm
-          </button>
+          </button> */}
         </div>
       </div>
     </Modal>

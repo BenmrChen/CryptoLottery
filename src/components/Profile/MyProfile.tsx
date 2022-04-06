@@ -8,7 +8,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { Stack, Box, Typography } from '@mui/material'
 import { Grid, Card, CardMedia, CardActions } from '@mui/material'
-import { account_contract } from "../../config/contract";
+import { account_contract, lottery_game, lottery_nft, vendor_contract } from "../../config/contract";
 import Button from '@mui/material/Button';
 import Image from 'react-image-webp';
 import waiting from '../../assets/imgs/waiting.webp'
@@ -56,17 +56,90 @@ export const MyProfile = () => {
     const [loading, setLoading] = useState(false);
     const [coins, setCoins] = useState(0);
     const [isJoin, setIsJoin] = useState(false);
-    const [isOwnNFT, setIsOwnNFT] = useState(true);
+    const [isOwnNFT, setIsOwnNFT] = useState(false);
     const [isStakeNFT, setIsStakeNFT] = useState(false);
 
-    const [{ data: accountContractData }, fetchMyAccount] = useContractRead(
-        {
-          addressOrName: account_contract.address,
-          contractInterface: account_contract.abi,
-          signerOrProvider: provider,
-        },
-        "myAccount"
-      ) as any;
+  const [{ data: accountContractData }, cFetchAccountBalance] = useContractRead(
+    {
+      addressOrName: account_contract.address,
+      contractInterface: account_contract.abi,
+      signerOrProvider: provider,
+    },
+    "getAccountBalance"
+  ) as any;
+
+  const [{ data: tokenSupplyData }, cTokenSupply] = useContractRead(
+    {
+      addressOrName: vendor_contract.address,
+      contractInterface: vendor_contract.abi,
+      signerOrProvider: provider,
+    },
+    "tokenSupply"
+  );
+
+  const [{}, cEnterGame] = useContractWrite(
+    {
+      addressOrName: lottery_game.address,
+      contractInterface: lottery_game.abi,
+      signerOrProvider: provider,
+    },
+    "enter"
+  )
+  
+  const [{ data: clTokenData, error }, cBuyTokens] = useContractWrite(
+    {
+      addressOrName: vendor_contract.address,
+      contractInterface: vendor_contract.abi,
+      signerOrProvider: provider,
+    },
+    "buyTokens"
+  )
+
+  const [{ data }, cMintLotteryNFT] = useContractWrite(
+    {
+      addressOrName: lottery_nft.address,
+      contractInterface: lottery_nft.abi,
+      signerOrProvider: provider,
+    },
+    "safeMintSender"
+  );
+
+  const joinLotteryGame = async () => {
+    setLoading(true)
+    const result = await cEnterGame();
+    console.log("joinLotteryGame result = ", result);
+    setLoading(false);
+  };
+
+  const buyToken = async () => {
+    setLoading(true)
+    const result = await cBuyTokens({
+      overrides: {
+        gasLimit: 2030000,
+        gasPrice: 60000000000,
+        value: 10
+      },
+    });
+    console.log("buyToken result = ", result);
+
+    const supp = await cTokenSupply();
+    console.log("tokenSupplyData result = ", result);
+    setLoading(false);
+  };
+
+  const buyLotteryNFT = async () => {
+    setLoading(true)
+    const result = await cMintLotteryNFT();
+    console.log("buyLotteryNFT result = ", result);
+    setLoading(false);
+  };
+
+  const fetchBalance = async () => {
+    setLoading(true)
+    const result = await cFetchAccountBalance();
+    console.log("fetchBalance result = ", result);
+    setLoading(false);
+  };
 
   const OnSelectNFT = (x: NFTObject) => {
     setCurretSelect(x);
@@ -83,14 +156,12 @@ export const MyProfile = () => {
           // TODO: error handel
           return
       }
-
+      
+      console.log('tokenSupplyData === ' + tokenSupplyData)
+      console.log('clTokenData === ' + clTokenData)
       console.log("address ====  " + accountData?.address)
       if (accountContractData === undefined) {
-          console.log('fetchMyAccount')
-          setLoading(true);
-          fetchMyAccount();
-          // after fetching...
-          setLoading(false);
+          fetchBalance();
       } else {
           setLoading(false);
           setCoins(accountContractData.coins);
@@ -124,12 +195,7 @@ export const MyProfile = () => {
           <Box sx={{ml: 1}}>
           <Button color='primary'
           size="small"
-          onClick={() => {
-            setLoading(true)
-            // TODO: call api Token.buyToken
-            // after fetching...
-            setLoading(false);
-          }}
+          onClick={buyToken}
           variant="outlined"
           >購買代幣</Button>
           </Box>
@@ -183,14 +249,15 @@ export const MyProfile = () => {
               <Button color='primary'
               size="small"
               onClick={() => {
-                setLoading(true)
-                if (isOwnNFT) {
-                  // TODO: call api Lottery.buyLotteryWithNFT
-                } else {
-                  // TODO: call api Lottery.buyLottery
-                }
-                // after fetching...
-                setLoading(false);
+                joinLotteryGame()
+                // setLoading(true)
+                // if (isOwnNFT) {
+                //   // TODO: call api Lottery.buyLotteryWithNFT
+                // } else {
+                //   // TODO: call api Lottery.buyLottery
+                // }
+                // // after fetching...
+                // setLoading(false);
               }}
               variant="outlined"
               disabled={coins < 200 || (isStakeNFT && coins < 160)}
@@ -237,12 +304,7 @@ export const MyProfile = () => {
       sx={{px: 3,
         ml: 3,
         py: '11px'}} 
-        color='primary' size="large" variant="outlined" startIcon={<StorefrontIcon />} onClick={() => {
-          setLoading(true)
-          // TODO: call api NFT.buyNFT
-          // after fetching...
-          setLoading(false);
-      }}>購買 NFT</Button></ThemeProvider>
+        color='primary' size="large" variant="outlined" startIcon={<StorefrontIcon />} onClick={buyLotteryNFT}>購買 NFT</Button></ThemeProvider>
     )
   }
   

@@ -1,32 +1,47 @@
-import AtomicToken from "../../artifacts/contracts/example/AtomicToken.sol/AtomicToken.json";
-import atomic_token_address from "../../address/AtomicToken.json";
-
-import rentrent_token_address from "../../address/RentRentToken.json";
-
 import baycAbi from "../../external/bayc.json"; // external contract
+
+import accountContract from "../../artifacts/contracts/Account.sol/Account.json";
+import account_contract_address from "../../address/Account.json";
+
+import CLToken from "../../artifacts/contracts/CLToken.sol/CLToken.json";
+import cl_token_address from "../../address/CLToken.json";
+
+import LotteryGameContract from "../../artifacts/contracts/LotteryGame.sol/LotteryGame.json";
+import lottery_game_contract_address from "../../address/LotteryGame.json";
+
+import LotteryNFTToken from "../../artifacts/contracts/LotteryNFT.sol/LotteryNFT.json";
+import lottery_nft_token_address from "../../address/LotteryNFT.json";
+
+import VendorContract from "../../artifacts/contracts/Vendor.sol/Vendor.json";
+import vendor_contract_address from "../../address/Vendor.json";
+
+// old
 import nftAbi from "../../external/nft.json";
 
-import MarketContract from "../../artifacts/contracts/example/Market.sol/Market.json";
-import market_contract_address from "../../address/Market.json";
-
-import accountToken from "../../artifacts/contracts/example/AtomicToken.sol/AtomicToken.json";; // TODO: right .json file
-import account_token_address from "../../address/AtomicToken.json";
-
-
 export const account_contract = {
-  address: account_token_address.address,
-  abi: accountToken.abi,
+  address: account_contract_address.address,
+  abi: accountContract.abi,
 };
 
 // 代幣 token
-export const atomic_token = {
-  address: atomic_token_address.address,
-  abi: AtomicToken.abi,
+export const cl_token = {
+  address: cl_token_address.address,
+  abi: CLToken.abi,
 };
 
-export const rentrent_token = {
-  address: rentrent_token_address.address,
-  abi: AtomicToken.abi,
+export const lottery_game = {
+  address: lottery_game_contract_address.address,
+  abi: LotteryGameContract.abi,
+};
+
+export const vendor_contract = {
+  address: vendor_contract_address.address,
+  abi: VendorContract.abi,
+};
+
+export const lottery_nft = {
+  address: lottery_nft_token_address.address,
+  abi: LotteryNFTToken.abi,
 };
 
 export const bayc_contract = {
@@ -39,6 +54,6 @@ export const ERC721_contract = {
 };
 
 export const market_contract = {
-  address: market_contract_address.address,
-  abi: MarketContract.abi,
+  address: vendor_contract_address.address,
+  abi: VendorContract.abi,
 };

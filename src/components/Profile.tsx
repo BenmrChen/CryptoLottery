@@ -6,10 +6,10 @@ import { RentModal } from "./RentModal";
 import { OPENSEADOMAIN } from "../constants";
 import { market_contract } from "../config/contract";
 import { useNavigate, useLocation } from "react-router-dom";
-import Image from 'react-image-webp';
-import waiting from '../assets/imgs/waiting.webp'
-import waitingDefault from '../assets/imgs/wait-default.png'
-import { ethers } from 'ethers'
+import Image from "react-image-webp";
+import waiting from "../assets/imgs/waiting.webp";
+import waitingDefault from "../assets/imgs/wait-default.png";
+import { ethers } from "ethers";
 
 export const Profile = () => {
   const navigate = useNavigate();
@@ -38,7 +38,7 @@ export const Profile = () => {
       });
   };
 
-  const [{ }, getMarketItem] = useContractWrite(
+  const [{}, getMarketItem] = useContractWrite(
     {
       addressOrName: market_contract.address,
       contractInterface: market_contract.abi,
@@ -64,7 +64,6 @@ export const Profile = () => {
   //   "fetchMyMarketItems"
   // ) as any;
 
-
   //取得所有個人頁：租賃中商品
   // const [{ data: myRentingItem }, fetchMyRentingItems] = useContractRead(
   //   {
@@ -85,10 +84,10 @@ export const Profile = () => {
     "fetchMarketItems"
   ) as any;
 
-  const [marketItemCount, setMarketItemCount] = useState(0)
+  const [marketItemCount, setMarketItemCount] = useState(0);
   if (marketItem?.length > 0 && marketItemCount == 0) {
-    setMarketItemCount(marketItem?.length || 0)
-    console.log(marketItemCount, 'marketItemCount')
+    setMarketItemCount(marketItem?.length || 0);
+    console.log(marketItemCount, "marketItemCount");
   }
 
   // useEffect(() => {
@@ -99,9 +98,9 @@ export const Profile = () => {
   //opensea api 為了拿NFT圖片URL
   //但同時打opensea api會報429錯誤，所以要setTimeout
   const getRefinedData = async (parseList: any) => {
-    console.log(parseList, 'parseList')
+    console.log(parseList, "parseList");
     if (!parseList) {
-      parseList = []
+      parseList = [];
     }
     const doSomethingAsync = async (el: any) => {
       const tokenID = el.tokenId?.toString();
@@ -134,21 +133,21 @@ export const Profile = () => {
       myData.push(item);
     }
     setNftList(myData);
-    console.log('done!!!!!!!')
+    console.log("done!!!!!!!");
     setLoading(false);
   };
 
   useEffect(() => {
     // if (accountData?.address)
-    setLoading(true)
+    setLoading(true);
     const query = new URLSearchParams(search);
-    const paramField = query.get('type');
-    setType(paramField || 'all')
+    const paramField = query.get("type");
+    setType(paramField || "all");
     if (!accountData?.address) {
-      return
+      return;
     }
 
-    console.log(marketItem, 'marketItem')
+    console.log(marketItem, "marketItem");
 
     switch (type) {
       case "myitems":
@@ -168,7 +167,7 @@ export const Profile = () => {
         const myRentingItems = marketItem?.filter(
           (x: any) => x.renter == accountData?.address
         );
-        console.log(myRentingItems)
+        console.log(myRentingItems);
         getRefinedData(myRentingItems);
         break;
       case "all":
@@ -201,30 +200,30 @@ export const Profile = () => {
 
   const Modal = modal[type];
 
-  if (loading) return <div className="confirm-loading flex-c">
-    <div>
-      <Image
+  if (loading)
+    return (
+      <div className="confirm-loading flex-c">
+        <div>
+          {/* <Image
         src={waitingDefault}
         webp={waiting}
-      />
-      wait loading data...
-    </div>
-  </div>
+      /> */}
+          wait loading data...
+        </div>
+      </div>
+    );
 
   return (
     <div className="container-profile">
       {/* 等待交易完成 */}
-      {
-        modalIsWait && <div className="confirm-loading flex-c">
+      {modalIsWait && (
+        <div className="confirm-loading flex-c">
           <div>
-            <Image
-              src={waitingDefault}
-              webp={waiting}
-            />
+            <Image src={waitingDefault} webp={waiting} />
             wait transaction confirm...
           </div>
         </div>
-      }
+      )}
       {/* 出租彈窗 */}
       {modalIsOpen && (
         <Modal
@@ -268,7 +267,7 @@ export const Profile = () => {
       <div className="card-wrapper">
         {nftList?.length > 0 ? (
           nftList.map((x: any) => {
-            console.log(x, 'xxxxxx')
+            console.log(x, "xxxxxx");
             return (
               <div
                 key={x?.id ? x?.id : x?.itemId}
@@ -286,26 +285,34 @@ export const Profile = () => {
                       #{x?.token_id}
                     </h5>
                   </div>
-                  {
-                    !x?.price?.toString() ? '' : <div>
+                  {!x?.price?.toString() ? (
+                    ""
+                  ) : (
+                    <div>
                       <i className="fa-brands fa-ethereum"></i>
                       <h5 className="grey-text">租金(ETH)</h5>
-                      <h5 className="grey-text">{ethers.utils.formatEther(x?.price?.toString() || 0)}</h5>
+                      <h5 className="grey-text">
+                        {ethers.utils.formatEther(x?.price?.toString() || 0)}
+                      </h5>
                     </div>
-                  }
-                  {
-                    (type == 'all' || type == 'myMarketItems') && (
-                      !x?.deposit?.toString() ? '' : <div>
-                      <i className="fa-brands fa-ethereum"></i>
-                      <h5 className="grey-text">押金(ETH)</h5>
-                      <h5 className="grey-text">{ethers.utils.formatEther(x?.deposit?.toString() || 0)}</h5>
-                    </div>
-                    )
-                  }
-
+                  )}
+                  {(type == "all" || type == "myMarketItems") &&
+                    (!x?.deposit?.toString() ? (
+                      ""
+                    ) : (
+                      <div>
+                        <i className="fa-brands fa-ethereum"></i>
+                        <h5 className="grey-text">押金(ETH)</h5>
+                        <h5 className="grey-text">
+                          {ethers.utils.formatEther(
+                            x?.deposit?.toString() || 0
+                          )}
+                        </h5>
+                      </div>
+                    ))}
                 </div>
               </div>
-            )
+            );
           })
         ) : (
           <div className="empty-hint">暫無資料</div>

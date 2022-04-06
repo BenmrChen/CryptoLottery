@@ -20,7 +20,7 @@ contract LotteryNFT is ERC721, Ownable {
         _safeMint(to, tokenId);
     }
 
-    function safeMintSender() public payable {
+    function safeMintUser() public payable {
         require(msg.value >= 0.3 ether, "Not sufficient ETH to mint");
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();

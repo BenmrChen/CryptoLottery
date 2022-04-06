@@ -8,13 +8,38 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { Stack, Box, Typography } from '@mui/material'
 import { Grid, Card, CardMedia, CardActions } from '@mui/material'
-import { account_contract } from "../../config/contract";
+import { account_contract, lottery_game, lottery_nft, staking_contract, vendor_contract } from "../../config/contract";
 import Button from '@mui/material/Button';
 import Image from 'react-image-webp';
 import waiting from '../../assets/imgs/waiting.webp'
 import waitingDefault from '../../assets/imgs/wait-default.png'
 import StorefrontIcon from '@mui/icons-material/Storefront';
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#7cc0d8",
+      contrastText: "#24586c"
+    },
+    action: {
+      focus: "#525879",
+      active: "#525879",
+      disabledBackground: "#7e878e80",
+      disabled: "#52878e40"
+    },
+    text: {
+      primary: "#eee"
+    }
+  }
+});
+
+// Update the Button's color prop options
+declare module "@mui/material/Button" {
+  interface ButtonPropsColorOverrides {
+    primary: true;
+  }
+}
 
 export const MyProfile = () => {
     const navigate = useNavigate();
@@ -34,22 +59,147 @@ export const MyProfile = () => {
     const [isOwnNFT, setIsOwnNFT] = useState(false);
     const [isStakeNFT, setIsStakeNFT] = useState(false);
 
-    const [{ data: accountContractData }, fetchMyAccount] = useContractRead(
-        {
-          addressOrName: account_contract.address,
-          contractInterface: account_contract.abi,
-          signerOrProvider: provider,
-        },
-        "myAccount"
-      ) as any;
+  const [{ data: accountContractData }, cFetchAccountBalance] = useContractRead(
+    {
+      addressOrName: account_contract.address,
+      contractInterface: account_contract.abi,
+      signerOrProvider: provider,
+    },
+    "getAccountBalance"
+  ) as any;
 
-  const OnSelectNFT = (x: NFTObject) => {
-    setCurretSelect(x);
-    setIsOpen(true);
+  const [{ data: tokenSupplyData }, cTokenSupply] = useContractRead(
+    {
+      addressOrName: vendor_contract.address,
+      contractInterface: vendor_contract.abi,
+      signerOrProvider: provider,
+    },
+    "tokenSupply"
+  ) as any;
+
+  const [{}, cCheckstaking] = useContractRead(
+    {
+      addressOrName: staking_contract.address,
+      contractInterface: staking_contract.abi,
+      signerOrProvider: provider,
+    },
+    "chkIfStaking",
+    {
+      args: accountData?.address,
+    }
+  );
+
+  const [{}, cCheckInGame] = useContractRead(
+    {
+      addressOrName: lottery_game.address,
+      contractInterface: lottery_game.abi,
+      signerOrProvider: provider,
+    },
+    "chkIfInGame",
+    {
+      args: accountData?.address,
+    }
+  ) as any;
+
+  const [{ data: stakingNFT}, cStakingNFT] = useContractWrite(
+    {
+      addressOrName: staking_contract.address,
+      contractInterface: staking_contract.abi,
+      signerOrProvider: provider,
+    },
+    "staking"
+  )
+
+  const [{}, cEnterGame] = useContractWrite(
+    {
+      addressOrName: lottery_game.address,
+      contractInterface: lottery_game.abi,
+      signerOrProvider: provider,
+    },
+    "enter"
+  )
+  
+  const [{ data: clTokenData, error }, cBuyTokens] = useContractWrite(
+    {
+      addressOrName: vendor_contract.address,
+      contractInterface: vendor_contract.abi,
+      signerOrProvider: provider,
+    },
+    "buyTokens"
+  )
+
+  const [{ data: mintNFTData }, cMintLotteryNFT] = useContractWrite(
+    {
+      addressOrName: lottery_nft.address,
+      contractInterface: lottery_nft.abi,
+      signerOrProvider: provider,
+    },
+    "safeMintSender"
+  );
+
+  const joinLotteryGame = async () => {
+    setLoading(true)
+    const result = await cEnterGame();
+    console.log("joinLotteryGame result = ", result);
+    setLoading(false);
   };
 
-  const closeModal = () => {
-    setIsOpen(false);
+  const checkIsJoinedGame = async () => {
+    setLoading(true)
+    const result = await cCheckInGame();
+    console.log("checkIsJoinedGame data = ", result['data']);
+    setIsJoin(result['data'] ?? false);
+    setLoading(false);
+  };
+
+  const buyToken = async () => {
+    setLoading(true)
+    const result = await cBuyTokens({
+      overrides: {
+        gasLimit: 2030000,
+        gasPrice: 60000000000,
+        value: 10
+      },
+    });
+    console.log("buyToken result = ", result);
+
+    await cTokenSupply();
+    setCoins(tokenSupplyData ?? 0)
+    console.log("tokenSupplyData value = ", tokenSupplyData);
+    setLoading(false);
+  };
+
+  const buyLotteryNFT = async () => {
+    setLoading(true)
+    const result = await cMintLotteryNFT();
+    console.log("buyLotteryNFT result = ", result);
+    console.log('aaaaa ====   aaa  ' + mintNFTData)
+    setLoading(false);
+  };
+
+  const fetchBalance = async () => {
+    setLoading(true)
+    const result = await cFetchAccountBalance();
+    console.log("fetchBalance result = ", result);
+    setLoading(false);
+  };
+
+  const checkNFTStaking = async () => {
+    setLoading(true)
+    const result = await cCheckstaking();
+    console.log("checkNFTStaking result.data = ", result['data']);
+    setIsOwnNFT(result['data'] != undefined)
+    setLoading(false);
+  };
+
+  const stakingMyNFT = async () => {
+    setLoading(true)
+    const stakingResult = await cStakingNFT();
+    console.log("stakingMyNFT result.data = ", stakingResult['data']);
+    setIsStakeNFT(stakingResult['data'] != undefined)
+
+    await checkNFTStaking();
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -58,64 +208,63 @@ export const MyProfile = () => {
           // TODO: error handel
           return
       }
-
+      
+      console.log('tokenSupplyData === ' + tokenSupplyData)
+      console.log('clTokenData === ' + clTokenData)
       console.log("address ====  " + accountData?.address)
       if (accountContractData === undefined) {
-          console.log('fetchMyAccount')
-          setLoading(true);
-          fetchMyAccount();
-          // after fetching...
-          setLoading(false);
-      } else {
-          setLoading(false);
-          setCoins(accountContractData.coins);
-          setIsJoin(accountContractData.isJoin);
+          fetchBalance();
+          checkNFTStaking();
+          checkIsJoinedGame();
+      // } else {
+      //     setCoins(accountContractData[0] ?? 0);
+      //     setIsJoin(accountContractData[1] ?? false);
+      //     console.log('set account to, coin ' + coins)
+      //     console.log('set account to, isJoin ' + isJoin)
+      //     setLoading(false);
       }
 
   }, [accountData?.address, accountContractData]);
 
   const CoinInfo = () => {
     return (
-      <Box
-      sx={{
-            alignItems: 'center',
-            cursor: 'pointer',
-            display: 'flex',
-            justifyContent: 'space-between',
-            px: 3,
-            py: '11px',
-            }}
-            >
-            <MonetizationOnIcon fontSize='large'/>
-            <Box sx={{ml: 1}}>
-                <Typography
-                color="neutral.400"
-                variant="body2"
-                >
-                目前持有代幣數為: {coins}
-                </Typography>
-            </Box>
-            <Box sx={{ml: 1}}>
-            <Button className='white-paper-link'
-            size="small"
-            onClick={() => {
-              setLoading(true)
-              // TODO: call api Token.buyToken
-              // after fetching...
-              setLoading(false);
-            }}
-            variant="outlined"
-            >購買代幣</Button>
-            </Box>
+      <ThemeProvider theme={theme}>
+        <Box
+        sx={{
+          alignItems: 'center',
+          cursor: 'pointer',
+          display: 'flex',
+          justifyContent: 'space-between',
+          px: 3,
+          py: '11px',
+          }}
+          >
+          <MonetizationOnIcon fontSize='large'/>
+          <Box sx={{ml: 1}}>
+              <Typography
+              color="text.primary"
+              variant="body1"
+              >
+              目前持有代幣數為: {coins}
+              </Typography>
+          </Box>
+          <Box sx={{ml: 1}}>
+          <Button color='primary'
+          size="small"
+          onClick={buyToken}
+          variant="outlined"
+          >購買代幣</Button>
+          </Box>
         </Box>
+        </ThemeProvider>
     )
   }
 
   const JoinStatusInfo = () => {
     return (
-        isJoin ? (
-        <Box 
-        sx={{
+        isJoin ? (<ThemeProvider theme={theme}>
+          <Box 
+          sx={{
             alignItems: 'center',
             cursor: 'pointer',
             display: 'flex',
@@ -127,50 +276,55 @@ export const MyProfile = () => {
             <CheckCircleIcon fontSize='large'/>
             <Box sx={{ml: 1}}>
                 <Typography
-                color="neutral.400"
-                variant="body2"
+                color="text.primary"
+                variant="body1"
                 >已參與此次抽獎活動</Typography>
-            </Box></Box>) : 
-        (<Box
-        sx={{
-            alignItems: 'center',
-            cursor: 'pointer',
-            display: 'flex',
-            justifyContent: 'space-between',
-            px: 3,
-            py: '11px',
-            }}
-            >
-            <CancelIcon fontSize='large'/>
-            <Box sx={{ml: 1}}>
-            <Typography
-            color="neutral.400"
-            variant="body2"
-            >尚未參與抽獎活動</Typography>
-            </Box>
-            <Box sx={{ml: 1}}>
-            <Button className='white-paper-link'
-            size="small"
-            onClick={() => {
-              setLoading(true)
-              if (isOwnNFT) {
-                // TODO: call api Lottery.buyLotteryWithNFT
-              } else {
-                // TODO: call api Lottery.buyLottery
-              }
-              // after fetching...
-              setLoading(false);
-            }}
-            variant="outlined"
-            disabled={coins < 200 || (isStakeNFT && coins < 160)}
-            >參加抽獎</Button></Box></Box>)
+            </Box></Box>
+        </ThemeProvider>) : 
+        (<ThemeProvider theme={theme}>
+          <Box
+          sx={{
+              alignItems: 'center',
+              cursor: 'pointer',
+              display: 'flex',
+              justifyContent: 'space-between',
+              px: 3,
+              py: '11px',
+              }}
+              >
+              <CancelIcon fontSize='large' />
+              <Box sx={{ml: 1}}>
+              <Typography
+              color="text.primary"
+              variant="body1"
+              >尚未參與抽獎活動</Typography>
+              </Box>
+              <Box sx={{ml: 1}}>
+              <Button color='primary'
+              size="small"
+              onClick={() => {
+                joinLotteryGame()
+                // setLoading(true)
+                // if (isOwnNFT) {
+                //   // TODO: call api Lottery.buyLotteryWithNFT
+                // } else {
+                //   // TODO: call api Lottery.buyLottery
+                // }
+                // // after fetching...
+                // setLoading(false);
+              }}
+              variant="outlined"
+              // disabled={coins < 200 || (isStakeNFT && coins < 160)}
+              >參加抽獎</Button></Box>
+          </Box>
+        </ThemeProvider>)
     )
   }
 
   const NFTInfo = () => {
     return (
       isOwnNFT ? 
-      (<Grid item xs={12} sm={6} md={4} color="#fff" >
+      (<Grid sx={{ml: 3}} item xs={12} sm={6} md={4} color="#000000" >
           <Card
               sx={{ width: '30%', display: 'flex', flexDirection: 'column' }}
           >
@@ -181,32 +335,25 @@ export const MyProfile = () => {
                   }}
                   image="https://source.unsplash.com/random"
               />
-              <CardActions>
-                  <Button size="small" color='primary' variant="outlined" disabled={isStakeNFT} onClick={() => {
-                    setLoading(true)
-                    // TODO: call api NFT.stakeNFT
-                    // after fetching...
-                    setLoading(false);
-                  }}>質押 NFT</Button>
-                  <Button size="small" color='primary' variant="outlined" disabled={!isStakeNFT} onClick={() => {
+              <ThemeProvider theme={theme}>
+              <CardActions >
+                  <Button size="small" color='primary' variant="outlined" disabled={isStakeNFT} onClick={stakingMyNFT}>質押 NFT</Button>
+                  {/* <Button size="small" color='primary' variant="outlined" disabled={!isStakeNFT} onClick={() => {
                     setLoading(true)
                     // TODO: call api Token.rewardDailyToken
                     // after fetching...
                     setLoading(false);
-                  }}>領取獎勵</Button>
+                  }}>領取獎勵</Button> */}
               </CardActions>
+              </ThemeProvider>
           </Card>
       </Grid>) :
+      <ThemeProvider theme={theme}>
       <Button 
       sx={{px: 3,
         ml: 3,
         py: '11px'}} 
-        className="user-page-link" size="large" variant="outlined" startIcon={<StorefrontIcon />} onClick={() => {
-          setLoading(true)
-          // TODO: call api NFT.buyNFT
-          // after fetching...
-          setLoading(false);
-      }}>購買 NFT</Button>
+        color='primary' size="large" variant="outlined" startIcon={<StorefrontIcon />} onClick={buyLotteryNFT}>購買 NFT</Button></ThemeProvider>
     )
   }
   
@@ -220,6 +367,7 @@ export const MyProfile = () => {
         wait loading data...
       </div>
     </div>) :
+    <ThemeProvider theme={theme}>
     <div className="left">
         <Box sx={{
             alignItems: 'left',
@@ -235,13 +383,14 @@ export const MyProfile = () => {
             alignItems="stretch"
             spacing={0}
             >
-                <Box className="user-page-link"><AccountInfo /></Box>
+                <Box className="user-page-link" color='text.primary'><AccountInfo /></Box>
                 <Box className="user-page-link"><CoinInfo /></Box>
                 <Box className="user-page-link"><JoinStatusInfo /></Box>
                 <Box className="user-page-link"><NFTInfo /></Box>
             </Stack>
         </Box>
     </div>
+    </ThemeProvider>
 );
 };
 

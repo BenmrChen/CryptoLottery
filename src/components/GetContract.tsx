@@ -6,15 +6,15 @@ import {
   useContractWrite,
 } from "wagmi";
 
-import { atomic_token, bayc_contract } from "../config/contract";
+import { cl_token, bayc_contract } from "../config/contract";
 
 export const GetContract = () => {
   const provider = useProvider();
 
   const [{ data: symbol, error, loading }, read] = useContractRead(
     {
-      addressOrName: atomic_token.address,
-      contractInterface: atomic_token.abi,
+      addressOrName: cl_token.address,
+      contractInterface: cl_token.abi,
       signerOrProvider: provider,
     },
     "symbol"

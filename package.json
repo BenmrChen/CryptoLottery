@@ -12,6 +12,7 @@
     "console:rinkeby": "npx hardhat console --network rinkeby",
     "deploy:localhost": "npx hardhat run --network localhost scripts/deploy.js",
     "deploy:rinkeby": "npx hardhat run --network rinkeby scripts/deploy.js",
+    "deploy:ropsten": "npx hardhat run --network ropsten scripts/deploy.js",
     "deploy": "npx hardhat run --network mainnet scripts/deploy.js"
   },
   "devDependencies": {

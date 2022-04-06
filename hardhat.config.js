@@ -26,7 +26,7 @@ module.exports = {
   defaultNetwork,
   networks: {
     localhost: {
-      url: 'http://localhost:8545',
+      url: 'http://localhost:7545',
       gas: 2100000,
       gasPrice: 8000000000,
     },
@@ -50,12 +50,12 @@ module.exports = {
     //   gas: 2100000,
     //   gasPrice: 8000000000,
     // },
-    // ropsten: {
-    //   url: `https://ropsten.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
-    //   accounts: [process.env.ACCOUNT_PRIVATE_KEY || ''],
-    //   gas: 2100000,
-    //   gasPrice: 8000000000,
-    // },
+    ropsten: {
+      url: `https://ropsten.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
+      accounts: [process.env.ACCOUNT_PRIVATE_KEY || ''],
+      gas: 2100000,
+      gasPrice: 8000000000,
+    },
     // goerli: {
     //   url: `https://goerli.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
     //   accounts: [process.env.ACCOUNT_PRIVATE_KEY || ''],

@@ -21,7 +21,7 @@ export const AccountInfo = () => {
             <Box sx={{ml: 1}}>
                 <Typography
                 color="neutral.400"
-                variant="body2"
+                variant="body1"
                 >
                 {accountData?.address}
                 </Typography>

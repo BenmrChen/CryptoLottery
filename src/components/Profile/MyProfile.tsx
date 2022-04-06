@@ -89,6 +89,18 @@ export const MyProfile = () => {
     }
   );
 
+  const [{}, cCheckInGame] = useContractRead(
+    {
+      addressOrName: lottery_game.address,
+      contractInterface: lottery_game.abi,
+      signerOrProvider: provider,
+    },
+    "chkIfInGame",
+    {
+      args: accountData?.address,
+    }
+  ) as any;
+
   const [{ data: stakingNFT}, cStakingNFT] = useContractWrite(
     {
       addressOrName: staking_contract.address,
@@ -132,6 +144,14 @@ export const MyProfile = () => {
     setLoading(false);
   };
 
+  const checkIsJoinedGame = async () => {
+    setLoading(true)
+    const result = await cCheckInGame();
+    console.log("checkIsJoinedGame data = ", result['data']);
+    setIsJoin(result['data'] ?? false);
+    setLoading(false);
+  };
+
   const buyToken = async () => {
     setLoading(true)
     const result = await cBuyTokens({
@@ -146,7 +166,6 @@ export const MyProfile = () => {
     await cTokenSupply();
     setCoins(tokenSupplyData ?? 0)
     console.log("tokenSupplyData value = ", tokenSupplyData);
-
     setLoading(false);
   };
 
@@ -196,12 +215,13 @@ export const MyProfile = () => {
       if (accountContractData === undefined) {
           fetchBalance();
           checkNFTStaking();
-      } else {
-          setCoins(accountContractData[0] ?? 0);
-          setIsJoin(accountContractData[1] ?? false);
-          console.log('set account to, coin ' + coins)
-          console.log('set account to, isJoin ' + isJoin)
-          setLoading(false);
+          checkIsJoinedGame();
+      // } else {
+      //     setCoins(accountContractData[0] ?? 0);
+      //     setIsJoin(accountContractData[1] ?? false);
+      //     console.log('set account to, coin ' + coins)
+      //     console.log('set account to, isJoin ' + isJoin)
+      //     setLoading(false);
       }
 
   }, [accountData?.address, accountContractData]);
@@ -294,7 +314,7 @@ export const MyProfile = () => {
                 // setLoading(false);
               }}
               variant="outlined"
-              disabled={coins < 200 || (isStakeNFT && coins < 160)}
+              // disabled={coins < 200 || (isStakeNFT && coins < 160)}
               >參加抽獎</Button></Box>
           </Box>
         </ThemeProvider>)

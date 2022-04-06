@@ -9,6 +9,9 @@ import cl_token_address from "../../address/CLToken.json";
 import LotteryGameContract from "../../artifacts/contracts/LotteryGame.sol/LotteryGame.json";
 import lottery_game_contract_address from "../../address/LotteryGame.json";
 
+import LotteryGameETHContract from "../../artifacts/contracts/LotteryGame.sol/LotteryGame.json";
+import lottery_game_eth_contract_address from "../../address/LotteryGame.json";
+
 import LotteryNFTToken from "../../artifacts/contracts/LotteryNFT.sol/LotteryNFT.json";
 import lottery_nft_token_address from "../../address/LotteryNFT.json";
 
@@ -33,8 +36,8 @@ export const cl_token = {
 };
 
 export const lottery_game = {
-  address: lottery_game_contract_address.address,
-  abi: LotteryGameContract.abi,
+  address: lottery_game_eth_contract_address.address,
+  abi: LotteryGameETHContract.abi,
 };
 
 export const vendor_contract = {

@@ -26,7 +26,7 @@ module.exports = {
   defaultNetwork,
   networks: {
     localhost: {
-      url: 'http://localhost:8545',
+      url: 'http://localhost:7545',
       gas: 2100000,
       gasPrice: 8000000000,
     },

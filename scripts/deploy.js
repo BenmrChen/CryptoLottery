@@ -34,6 +34,7 @@ async function main() {
   const Vendor = await deployContract('Vendor', [CLToken.address])
   const LotteryNFT = await deployContract('LotteryNFT')
   const LotteryGame = await deployContract('LotteryGame')
+  const Account = await deployContract('Account', [CLToken.address, LotteryNFT.address])
 
   await CLToken.approve(Vendor.address, 1000000)
   await Vendor.addToken(CLToken.address, 1000000)

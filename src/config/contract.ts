@@ -15,6 +15,9 @@ import lottery_nft_token_address from "../../address/LotteryNFT.json";
 import VendorContract from "../../artifacts/contracts/Vendor.sol/Vendor.json";
 import vendor_contract_address from "../../address/Vendor.json";
 
+import StakingContract from "../../artifacts/contracts/Staking.sol/Staking.json";
+import staking_contract_address from "../../address/Staking.json";
+
 // old
 import nftAbi from "../../external/nft.json";
 
@@ -37,6 +40,11 @@ export const lottery_game = {
 export const vendor_contract = {
   address: vendor_contract_address.address,
   abi: VendorContract.abi,
+};
+
+export const staking_contract = {
+  address: staking_contract_address.address,
+  abi: StakingContract.abi,
 };
 
 export const lottery_nft = {

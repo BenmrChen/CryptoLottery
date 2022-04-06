@@ -8,7 +8,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { Stack, Box, Typography } from '@mui/material'
 import { Grid, Card, CardMedia, CardActions } from '@mui/material'
-import { account_contract, lottery_game, lottery_nft, vendor_contract } from "../../config/contract";
+import { account_contract, lottery_game, lottery_nft, staking_contract, vendor_contract } from "../../config/contract";
 import Button from '@mui/material/Button';
 import Image from 'react-image-webp';
 import waiting from '../../assets/imgs/waiting.webp'
@@ -75,7 +75,28 @@ export const MyProfile = () => {
       signerOrProvider: provider,
     },
     "tokenSupply"
+  ) as any;
+
+  const [{}, cCheckstaking] = useContractRead(
+    {
+      addressOrName: staking_contract.address,
+      contractInterface: staking_contract.abi,
+      signerOrProvider: provider,
+    },
+    "chkIfStaking",
+    {
+      args: accountData?.address,
+    }
   );
+
+  const [{ data: stakingNFT}, cStakingNFT] = useContractWrite(
+    {
+      addressOrName: staking_contract.address,
+      contractInterface: staking_contract.abi,
+      signerOrProvider: provider,
+    },
+    "staking"
+  )
 
   const [{}, cEnterGame] = useContractWrite(
     {
@@ -95,7 +116,7 @@ export const MyProfile = () => {
     "buyTokens"
   )
 
-  const [{ data }, cMintLotteryNFT] = useContractWrite(
+  const [{ data: mintNFTData }, cMintLotteryNFT] = useContractWrite(
     {
       addressOrName: lottery_nft.address,
       contractInterface: lottery_nft.abi,
@@ -122,8 +143,10 @@ export const MyProfile = () => {
     });
     console.log("buyToken result = ", result);
 
-    const supp = await cTokenSupply();
-    console.log("tokenSupplyData result = ", result);
+    await cTokenSupply();
+    setCoins(tokenSupplyData ?? 0)
+    console.log("tokenSupplyData value = ", tokenSupplyData);
+
     setLoading(false);
   };
 
@@ -131,6 +154,7 @@ export const MyProfile = () => {
     setLoading(true)
     const result = await cMintLotteryNFT();
     console.log("buyLotteryNFT result = ", result);
+    console.log('aaaaa ====   aaa  ' + mintNFTData)
     setLoading(false);
   };
 
@@ -141,13 +165,22 @@ export const MyProfile = () => {
     setLoading(false);
   };
 
-  const OnSelectNFT = (x: NFTObject) => {
-    setCurretSelect(x);
-    setIsOpen(true);
+  const checkNFTStaking = async () => {
+    setLoading(true)
+    const result = await cCheckstaking();
+    console.log("checkNFTStaking result.data = ", result['data']);
+    setIsOwnNFT(result['data'] != undefined)
+    setLoading(false);
   };
 
-  const closeModal = () => {
-    setIsOpen(false);
+  const stakingMyNFT = async () => {
+    setLoading(true)
+    const stakingResult = await cStakingNFT();
+    console.log("stakingMyNFT result.data = ", stakingResult['data']);
+    setIsStakeNFT(stakingResult['data'] != undefined)
+
+    await checkNFTStaking();
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -162,10 +195,13 @@ export const MyProfile = () => {
       console.log("address ====  " + accountData?.address)
       if (accountContractData === undefined) {
           fetchBalance();
+          checkNFTStaking();
       } else {
+          setCoins(accountContractData[0] ?? 0);
+          setIsJoin(accountContractData[1] ?? false);
+          console.log('set account to, coin ' + coins)
+          console.log('set account to, isJoin ' + isJoin)
           setLoading(false);
-          setCoins(accountContractData.coins);
-          setIsJoin(accountContractData.isJoin);
       }
 
   }, [accountData?.address, accountContractData]);
@@ -206,8 +242,6 @@ export const MyProfile = () => {
 
   const JoinStatusInfo = () => {
     return (
-
-      
         isJoin ? (<ThemeProvider theme={theme}>
           <Box 
           sx={{
@@ -283,18 +317,13 @@ export const MyProfile = () => {
               />
               <ThemeProvider theme={theme}>
               <CardActions >
-                  <Button size="small" color='primary' variant="outlined" disabled={isStakeNFT} onClick={() => {
-                    setLoading(true)
-                    // TODO: call api NFT.stakeNFT
-                    // after fetching...
-                    setLoading(false);
-                  }}>質押 NFT</Button>
-                  <Button size="small" color='primary' variant="outlined" disabled={!isStakeNFT} onClick={() => {
+                  <Button size="small" color='primary' variant="outlined" disabled={isStakeNFT} onClick={stakingMyNFT}>質押 NFT</Button>
+                  {/* <Button size="small" color='primary' variant="outlined" disabled={!isStakeNFT} onClick={() => {
                     setLoading(true)
                     // TODO: call api Token.rewardDailyToken
                     // after fetching...
                     setLoading(false);
-                  }}>領取獎勵</Button>
+                  }}>領取獎勵</Button> */}
               </CardActions>
               </ThemeProvider>
           </Card>

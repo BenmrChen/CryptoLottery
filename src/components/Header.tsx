@@ -1,9 +1,9 @@
 import * as React from "react";
 import { useAccount } from "wagmi";
 import { Link } from "react-router-dom";
-import { Connect } from '../components'
-import logo from '../assets/imgs/logo_w.png'
-import { AccountInfo } from './Profile/AccountInfo'
+import { Connect } from "../components";
+import logo from "../assets/imgs/logo_w.png";
+import { AccountInfo } from "./Profile/AccountInfo";
 
 // TODO:
 export const Header = () => {
@@ -20,25 +20,26 @@ export const Header = () => {
           alignItems: "center",
         }}
       >
-        <div style={{ display: "inline-block", width: "36px" }}>
+        {/* <div style={{ display: "inline-block", width: "36px" }}>
           <img src={logo} />
-        </div>
+        </div> */}
         <div style={{ color: "#fff", fontSize: "24px", letterSpacing: "4px" }}>
           ETH Lottery
         </div>
       </Link>
       <div className="right">
-        {
-          !accountData?.address ?
-            <Connect /> : <div className="flex-ac">
-              <Link className="user-page-link" to="/myprofile">
-                <AccountInfo />
-              </Link>
-              <div className="connect-btn" onClick={() => disconnect()}>
-                登出
-              </div>
-              </div>
-        }
+        {!accountData?.address ? (
+          <Connect />
+        ) : (
+          <div className="flex-ac">
+            <Link className="user-page-link" to="/myprofile">
+              <AccountInfo />
+            </Link>
+            <div className="connect-btn" onClick={() => disconnect()}>
+              Logout
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

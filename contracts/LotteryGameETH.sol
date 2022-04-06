@@ -1,25 +1,17 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.11;
 
-import "./CLToken.sol";
-import "./LotteryNFT.sol";
 
-contract LotteryGame {
+contract LotteryGameETH {
     address public owner;
     address payable[] public players;
     uint public lotteryId;
     mapping (uint => address payable) public lotteryHistory;
     address payable winner;
-
-    CLToken token;
-    LotteryNFT NFT;
-
-    uint lotteryPriceNormal = 200;
-    uint lotteryPriceWithNFT = 160;
     bool sent;
+    address tokenAddress;
 
-
-    constructor() {
+    constructor() payable {
         owner = msg.sender;
         lotteryId = 1;
     }
@@ -38,17 +30,8 @@ contract LotteryGame {
 
     function enter() public payable {
         // Owner 不允許參與
-        require(msg.sender != owner);
+        require(msg.sender != owner, "owner cannot join");
 
-        uint256 tokenBalance = token.balanceOf(msg.sender);
-        if (NFT.balanceOf(msg.sender) > 0) {
-            require(tokenBalance > lotteryPriceWithNFT);
-            sent = token.transferFrom(msg.sender, address(this), lotteryPriceWithNFT);
-        } else {
-            require(tokenBalance > lotteryPriceNormal);
-            sent = token.transferFrom(msg.sender, address(this), lotteryPriceNormal);
-        }
-        require(sent, "Failed to transfer tokens from user to vendor");
 
         // 放入 players
         players.push(payable(msg.sender));
@@ -62,7 +45,7 @@ contract LotteryGame {
         require(msg.sender == owner);
         uint index = getRandomNumber() % players.length;
         winner = players[index];
-        players[index].transfer(token.balanceOf(address(this)));
+        players[index].transfer(address(this).balance);
 
         lotteryHistory[lotteryId] = players[index];
         lotteryId++;
@@ -83,6 +66,7 @@ contract LotteryGame {
         }
         return false;
     }
+    
 
     modifier onlyOwner() {
         require(msg.sender == owner, "You are not the owner");

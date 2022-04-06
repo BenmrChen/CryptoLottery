@@ -70,13 +70,16 @@ export const MyProfile = () => {
   const [isOwnNFT, setIsOwnNFT] = useState(false);
   const [isStakeNFT, setIsStakeNFT] = useState(false);
 
-  const [{ data: accountContractData }, cFetchAccountBalance] = useContractRead(
+  const [{ data: accountContractData }, cFetchNFTBalance] = useContractRead(
     {
-      addressOrName: account_contract.address,
-      contractInterface: account_contract.abi,
+      addressOrName: lottery_nft.address,
+      contractInterface: lottery_nft.abi,
       signerOrProvider: provider,
     },
-    "getAccountBalance"
+    "balanceOf",
+    {
+      args: accountData?.address,
+    }
   ) as any;
 
   const [{ data: tokenSupplyData }, cTokenSupply] = useContractRead(
@@ -188,10 +191,11 @@ export const MyProfile = () => {
     setLoading(false);
   };
 
-  const fetchBalance = async () => {
+  const fetchNFTBalance = async () => {
     setLoading(true);
-    const result = await cFetchAccountBalance();
-    console.log("fetchBalance result = ", result);
+    await cFetchNFTBalance();
+    setIsOwnNFT(accountContractData != undefined);
+    console.log("fetchNFTBalance result = ", isOwnNFT);
     setLoading(false);
   };
 
@@ -199,7 +203,7 @@ export const MyProfile = () => {
     setLoading(true);
     const result = await cCheckstaking();
     console.log("checkNFTStaking result.data = ", result["data"]);
-    setIsOwnNFT(result["data"] != undefined);
+    setIsStakeNFT(result["data"] != undefined);
     setLoading(false);
   };
 
@@ -224,7 +228,7 @@ export const MyProfile = () => {
     console.log("clTokenData === " + clTokenData);
     console.log("address ====  " + accountData?.address);
     if (accountContractData === undefined) {
-      fetchBalance();
+      fetchNFTBalance();
       checkNFTStaking();
       checkIsJoinedGame();
       // } else {

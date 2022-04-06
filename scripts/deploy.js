@@ -30,27 +30,15 @@ async function main() {
   const deployer = deployers[0].address
   // We get the contract to deploy
   const initSupply = 5000 * 10 ** 4;
-  // const AtomicTokenContract = await deployContract('AtomicToken', [initSupply])
-  const RentRentToken = await deployContract('RentRentToken', [initSupply])
-  // const KryContract = await deployContract('KycContract', [])
-  // await deployContract('DuctionAuctionCrowdSale', [100, deployer, AtomicTokenContract.address, KryContract.address])
-  // await deployContract('Market', [])
+  const CLToken = await deployContract('CLToken', [initSupply])
+  const Vendor = await deployContract('Vendor', [CLToken.address])
+  const LotteryNFT = await deployContract('LotteryNFT')
+  const LotteryGame = await deployContract('LotteryGame')
+  const Account = await deployContract('Account', [CLToken.address, LotteryNFT.address])
+
+  await CLToken.approve(Vendor.address, 1000000)
+  await Vendor.addToken(CLToken.address, 1000000)
   console.log('done!')
-  // const AtomicToken = await hre.ethers.getContractFactory("AtomicToken")
-  // const dAtomicToken = await AtomicToken.deploy(initSupply)
-  // await dAtomicToken.deployed()
-
-  // const KycContract = await hre.ethers.getContractFactory("KycContract")
-  // const dKycContract = await KycContract.deploy()
-  // await dKycContract.deployed()
-
-  // const DuctionAuctionCrowdSale = await hre.ethers.getContractFactory("DuctionAuctionCrowdSale")
-  // const dDuctionAuctionCrowdSale = await DuctionAuctionCrowdSale.deploy(100, deployer, AtomicTokenContract.address, dKycContract.address)
-  // await dDuctionAuctionCrowdSale.deployed()
-
-  // console.log('AtomicToken address: ', dAtomicToken.address)
-  // console.log('KycContract address: ', dKycContract.address)
-  // console.log('DuctionAuctionCrowdSale address: ', dDuctionAuctionCrowdSale.address)
 }
 
 // We recommend this pattern to be able to use async/await everywhere

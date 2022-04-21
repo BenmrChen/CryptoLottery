@@ -33,7 +33,7 @@ Prerequisites: [Node (v16)](https://nodejs.org/en/download/) plus [npm](https://
 > clone/fork:
 
 ```bash
-git clone https://github.com/Krypto-Camp/batch2-final-project-team-4
+git clone https://github.com/BenmrChen/CryptoLotter
 ```
 
 > setup:
